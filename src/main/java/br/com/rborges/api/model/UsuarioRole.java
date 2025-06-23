@@ -2,6 +2,7 @@ package br.com.rborges.api.model;
 
 public enum UsuarioRole {
     ADMIN("admin"),
+    PACIENTE("paciente"),
     USER("user");
 
     private String role;

@@ -30,6 +30,10 @@ public  class Usuario implements UserDetails {
     @Column
     @Enumerated(EnumType.STRING)
     private UsuarioRole role;
+    @OneToOne
+    @JoinColumn(name = "paciente_id")
+    private Paciente paciente;
+
 
     public Usuario(String login, String password, UsuarioRole role){
         this.login = login;
@@ -39,8 +43,16 @@ public  class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UsuarioRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UsuarioRole.ADMIN) {
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_USER")
+            );
+        } else if (this.role == UsuarioRole.PACIENTE) {
+            return List.of(new SimpleGrantedAuthority("ROLE_PACIENTE"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
     }
 
     @Override
@@ -74,6 +86,7 @@ public  class Usuario implements UserDetails {
     public String getLogin(){ return login;}
 
 
-
-
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
 }

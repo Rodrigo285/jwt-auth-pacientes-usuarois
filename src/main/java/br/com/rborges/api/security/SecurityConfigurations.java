@@ -30,8 +30,11 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/registro/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/registro/cadastro").permitAll()
                         //O perfil ADMIN tem acesso para todos os @RestControllers
-                        .requestMatchers("/auth/**").hasRole("ADMIN")
+                        .requestMatchers("/registro/**").hasRole("ADMIN")
                         .requestMatchers("/pacientes/**").hasRole("ADMIN")
+                        //O perfil PACIENTE tem acesso apenas as recurso de visualizacao consultas medicos e historico
+                        .requestMatchers(HttpMethod.GET,"/pacientes").hasRole("PACIENTE")
+
 
                         .anyRequest().authenticated()
                 )

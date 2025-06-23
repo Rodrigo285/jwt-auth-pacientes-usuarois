@@ -31,6 +31,7 @@ public class Paciente {
     public Paciente(PacienteRequestDTO data){
         this.descricao = data.descricao();
         this.name = data.name();
+        this.email = data.email();
     }
 
     public String getEmail(){

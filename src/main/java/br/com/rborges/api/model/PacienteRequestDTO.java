@@ -10,6 +10,8 @@ public record PacienteRequestDTO(
         String name,
 
         @NotNull
-        String descricao
+        String descricao,
+        @NotNull
+        String email
 ) {
 }

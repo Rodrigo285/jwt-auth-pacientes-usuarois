@@ -1,12 +1,10 @@
 package br.com.rborges.api.controller;
 
 
+import br.com.rborges.api.model.*;
+import br.com.rborges.api.repositories.PacienteRepository;
 import br.com.rborges.api.repositories.UsuarioRepository;
 import br.com.rborges.api.security.TokenService;
-import br.com.rborges.api.model.AuthenticationDTO;
-import br.com.rborges.api.model.LoginResponseDTO;
-import br.com.rborges.api.model.RegisterDTO;
-import br.com.rborges.api.model.Usuario;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,11 +21,13 @@ public class AuthenticationController {
     private  final AuthenticationManager authenticationManager;
     private final UsuarioRepository usuarioRepository;
     private  final TokenService tokenService;
+    private  final PacienteRepository pacienteRepository;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, UsuarioRepository usuarioRepository, TokenService tokenService) {
+    public AuthenticationController(AuthenticationManager authenticationManager, UsuarioRepository usuarioRepository, TokenService tokenService, PacienteRepository pacienteRepository) {
         this.authenticationManager = authenticationManager;
         this.usuarioRepository = usuarioRepository;
         this.tokenService = tokenService;
+        this.pacienteRepository = pacienteRepository;
     }
 
     @PostMapping("/login")
@@ -46,6 +46,12 @@ public class AuthenticationController {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         Usuario usuario = new Usuario(data.login(), encryptedPassword, data.role());
+
+        if (data.pacienteId() != null) {
+            Paciente paciente = pacienteRepository.findById(data.pacienteId())
+                    .orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
+            usuario.setPaciente(paciente);
+        }
 
         this.usuarioRepository.save(usuario);
 
