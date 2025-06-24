@@ -5,7 +5,9 @@ import br.com.rborges.api.model.ConsultaDTO;
 import br.com.rborges.api.model.Paciente;
 import br.com.rborges.api.repositories.ConsultaRepository;
 import br.com.rborges.api.repositories.PacienteRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ConsultaService {
 
     private final ConsultaRepository consultaRepository;

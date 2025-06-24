@@ -33,7 +33,7 @@ public class SecurityConfigurations {
                         .requestMatchers("/registro/**").hasRole("ADMIN")
                         .requestMatchers("/pacientes/**").hasRole("ADMIN")
                         //O perfil PACIENTE tem acesso apenas as recurso de visualizacao consultas medicos e historico
-                        .requestMatchers(HttpMethod.GET,"/pacientes").hasRole("PACIENTE")
+                        .requestMatchers("/consultas/**").hasRole("PACIENTE")
 
 
                         .anyRequest().authenticated()
